@@ -1,4 +1,4 @@
-//inkcallerv8 is an implementation of inkcaller using ink js and V8 to run the JS.
+//package inkcallerv8 is an implementation of inkcaller using ink js and V8 to run the JS.
 package inkcallerv8
 
 import (

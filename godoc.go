@@ -1,4 +1,4 @@
-// inkcaller is an API to call Ink
+// package inkcaller is an API to call Ink
 //
 //
 // Each new call is independent.
