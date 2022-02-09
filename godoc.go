@@ -1,5 +1,4 @@
-// package inkcaller is an API to call Ink
-//
+// Package inkcaller is an API to call Ink.
 //
 // Each new call is independent.
 // A call will force the ink state, (optional) set the knot, (optional) answer a previous choice.
@@ -9,5 +8,5 @@
 //
 // Ink will need to interact with the game model. Set needed data inside ink state in the input. Use formatted text and a parser for the actions.
 //
-// Based on https://github.com/inkle/ink/blob/master/Documentation/RunningYourInk.md
+// Based on https://github.com/inkle/ink
 package inkcaller
