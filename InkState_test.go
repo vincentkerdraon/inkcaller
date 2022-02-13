@@ -1,7 +1,6 @@
 package inkcaller
 
 import (
-	"encoding/json"
 	"fmt"
 	"reflect"
 	"strings"
@@ -20,31 +19,36 @@ func TestDecodeInkState(t *testing.T) {
 	}{
 		{
 			name: "When OK",
-			args: args{sEncoded: `{"choiceThreads":{"4":{"callstack":[{"cPath":"SCENE_Tuto1rst.0.6","idx":8,"exp":false,"type":0,"temp":{"temp_money":0,"$r":{"^->":"SCENE_Tuto1rst.0.6.$r1"}}}],"threadIndex":4,"previousContentObject":"SCENE_Tuto1rst.0.6.7"},"5":{"callstack":[{"cPath":"SCENE_Tuto1rst.0.7","idx":8,"exp":false,"type":0,"temp":{"temp_money":0,"$r":{"^->":"SCENE_Tuto1rst.0.7.$r1"}}}],"threadIndex":5,"previousContentObject":"SCENE_Tuto1rst.0.7.7"}},"callstackThreads":{"threads":[{"callstack":[{"exp":false,"type":0,"temp":{"temp_money":0,"$r":{"^->":"SCENE_Tuto1rst.0.7.$r1"}}}],"threadIndex":1,"previousContentObject":"SCENE_Tuto1rst.0.7.8"}],"threadCounter":5},"variablesState":{"CharactersID":{"list":{},"origins":["CharactersID"]},"ScenesID":{"list":{},"origins":["ScenesID"]},"ScenesPossible":{"list":{"ScenesID.Tuto1":2,"ScenesID.TutoTemps":4}},"PresentInShop":{"list":{}},"CurrentTime":15,"CurrencyMain":50000,"TutoTempsRetourGuerrier":0},"evalStack":[],"outputStream":["^ ","^Ceci est le tuto 1. Une première quete super facile !","\n"],"currentChoices":[{"text":"Veux tu choisir le premier choix?","index":0,"originalChoicePath":"SCENE_Tuto1rst.0.6.8","originalThreadIndex":4,"targetPath":"SCENE_Tuto1rst.0.c-0"},{"text":"Ou le deuxième?","index":1,"originalChoicePath":"SCENE_Tuto1rst.0.7.8","originalThreadIndex":5,"targetPath":"SCENE_Tuto1rst.0.c-1"}],"visitCounts":{"":1,"MENU.NewGame":1,"MENU":1,"Smalltalk":1,"Smalltalk.0":1,"Hub":1,"Hub.0.c-0":1,"SCENE_Tuto1rst":1},"turnIndices":{},"turnIdx":0,"storySeed":30,"previousRandom":0,"inkSaveVersion":8,"inkFormatVersion":19}`},
+			args: args{sEncoded: `{"flows":{"DEFAULT_FLOW":{"callstack":{"threads":[{"callstack":[{"exp":false,"type":0}],"threadIndex":0,"previousContentObject":"Hub.0.24"}],"threadCounter":13},"outputStream":[],"choiceThreads":{"10":{"callstack":[{"cPath":"Hub.0","idx":5,"exp":false,"type":0}],"threadIndex":10,"previousContentObject":"Hub.0.4"},"11":{"callstack":[{"cPath":"Hub.0","idx":14,"exp":false,"type":0}],"threadIndex":11,"previousContentObject":"Hub.0.13"},"12":{"callstack":[{"cPath":"Hub.0","idx":23,"exp":false,"type":0}],"threadIndex":12,"previousContentObject":"Hub.0.22"},"13":{"callstack":[{"cPath":"Hub.0","idx":24,"exp":false,"type":0}],"threadIndex":13,"previousContentObject":"Hub.0.23"}},"currentChoices":[{"text":"Start Scene1","index":0,"originalChoicePath":"Hub.0.5","originalThreadIndex":10,"targetPath":"Hub.0.c-0"},{"text":"Start Scene2 (only visible after Scene1)","index":0,"originalChoicePath":"Hub.0.14","originalThreadIndex":11,"targetPath":"Hub.0.c-1"},{"text":"Start Scene3 (only visible by changing ink internal state)","index":0,"originalChoicePath":"Hub.0.23","originalThreadIndex":12,"targetPath":"Hub.0.c-2"},{"text":"","index":0,"originalChoicePath":"Hub.0.24","originalThreadIndex":13,"targetPath":"Hub.0.c-3"}]}},"currentFlowName":"DEFAULT_FLOW","variablesState":{"ScenesAvailable":{"list":{"ScenesID.SceneAvailable_2":1}},"Level":1},"evalStack":[],"visitCounts":{},"turnIndices":{},"turnIdx":5,"storySeed":2,"previousRandom":0,"inkSaveVersion":9,"inkFormatVersion":20}`},
 			want: &InkState{
-				CallstackThreads: CallstackThreads{
-					Threads: []Thread{
-						{Callstack: []ThreadCallstack{
-							{Temp: Temp{R: R{Empty: "SCENE_Tuto1rst.0.7.$r1"}}},
-						}},
+				Flows: Flows{
+					DefaultFlow: DefaultFlow{
+						OutputStream: []string{},
+						CurrentChoices: []CurrentChoice{
+							{
+								Text:       "Start Scene1",
+								Index:      0,
+								TargetPath: "Hub.0.c-0",
+							},
+							{
+								Text:       "Start Scene2 (only visible after Scene1)",
+								Index:      1,
+								TargetPath: "Hub.0.c-1",
+							},
+							{
+								Text:       "Start Scene3 (only visible by changing ink internal state)",
+								Index:      2,
+								TargetPath: "Hub.0.c-2",
+							},
+							{
+								Text:       "",
+								Index:      3,
+								TargetPath: "Hub.0.c-3",
+							},
+						},
 					},
 				},
-				VariablesState: json.RawMessage(`{"CharactersID":{"list":{},"origins":["CharactersID"]},"ScenesID":{"list":{},"origins":["ScenesID"]},"ScenesPossible":{"list":{"ScenesID.Tuto1":2,"ScenesID.TutoTemps":4}},"PresentInShop":{"list":{}},"CurrentTime":15,"CurrencyMain":50000,"TutoTempsRetourGuerrier":0}`),
-				OutputStream:   []string{"^ ", "^Ceci est le tuto 1. Une première quete super facile !", "\n"},
-				CurrentChoices: []CurrentChoice{
-					{Index: 0, Text: "Veux tu choisir le premier choix?", TargetPath: "SCENE_Tuto1rst.0.c-0"},
-					{Index: 1, Text: "Ou le deuxième?", TargetPath: "SCENE_Tuto1rst.0.c-1"},
-				},
-				VisitCounts: map[string]int64{
-					"":               1,
-					"Hub":            1,
-					"Hub.0.c-0":      1,
-					"MENU":           1,
-					"MENU.NewGame":   1,
-					"SCENE_Tuto1rst": 1,
-					"Smalltalk":      1,
-					"Smalltalk.0":    1,
-				},
+				TurnIdx: 5,
 			},
 		},
 	}
@@ -75,29 +79,38 @@ func TestStateEncoded_includeGameData(t *testing.T) {
 	}{
 		{
 			name:         "ok",
-			sEncoded:     `{"choiceThreads":{"4":{"callstack":[{"cPath":"SCENE_Tuto1rst.0.6","idx":8,"exp":false,"type":0,"temp":{"temp_money":0,"$r":{"^->":"SCENE_Tuto1rst.0.6.$r1"}}}],"threadIndex":4,"previousContentObject":"SCENE_Tuto1rst.0.6.7"},"5":{"callstack":[{"cPath":"SCENE_Tuto1rst.0.7","idx":8,"exp":false,"type":0,"temp":{"temp_money":0,"$r":{"^->":"SCENE_Tuto1rst.0.7.$r1"}}}],"threadIndex":5,"previousContentObject":"SCENE_Tuto1rst.0.7.7"}},"callstackThreads":{"threads":[{"callstack":[{"exp":false,"type":0,"temp":{"temp_money":0,"$r":{"^->":"SCENE_Tuto1rst.0.7.$r1"}}}],"threadIndex":1,"previousContentObject":"SCENE_Tuto1rst.0.7.8"}],"threadCounter":5},"variablesState":{"CharactersID":{"list":{},"origins":["CharactersID"]},"ScenesID":{"list":{},"origins":["ScenesID"]},"ScenesPossible":{"list":{"ScenesID.Tuto1":2,"ScenesID.TutoTemps":4}},"PresentInShop":{"list":{}},"CurrentTime":15,"CurrencyMain":50000,"TutoTempsRetourGuerrier":0},"evalStack":[],"outputStream":["^ ","^Ceci est le tuto 1. Une première quete super facile !","\n"],"currentChoices":[{"text":"Veux tu choisir le premier choix?","index":0,"originalChoicePath":"SCENE_Tuto1rst.0.6.8","originalThreadIndex":4,"targetPath":"SCENE_Tuto1rst.0.c-0"},{"text":"Ou le deuxième?","index":1,"originalChoicePath":"SCENE_Tuto1rst.0.7.8","originalThreadIndex":5,"targetPath":"SCENE_Tuto1rst.0.c-1"}],"visitCounts":{"":1,"MENU.NewGame":1,"MENU":1,"Smalltalk":1,"Smalltalk.0":1,"Hub":1,"Hub.0.c-0":1,"SCENE_Tuto1rst":1},"turnIndices":{},"turnIdx":0,"storySeed":30,"previousRandom":0,"inkSaveVersion":8,"inkFormatVersion":19}`,
+			sEncoded:     `{"flows":{"DEFAULT_FLOW":{"callstack":{"threads":[{"callstack":[{"exp":false,"type":0}],"threadIndex":0,"previousContentObject":"Hub.0.24"}],"threadCounter":13},"outputStream":[],"choiceThreads":{"10":{"callstack":[{"cPath":"Hub.0","idx":5,"exp":false,"type":0}],"threadIndex":10,"previousContentObject":"Hub.0.4"},"11":{"callstack":[{"cPath":"Hub.0","idx":14,"exp":false,"type":0}],"threadIndex":11,"previousContentObject":"Hub.0.13"},"12":{"callstack":[{"cPath":"Hub.0","idx":23,"exp":false,"type":0}],"threadIndex":12,"previousContentObject":"Hub.0.22"},"13":{"callstack":[{"cPath":"Hub.0","idx":24,"exp":false,"type":0}],"threadIndex":13,"previousContentObject":"Hub.0.23"}},"currentChoices":[{"text":"Start Scene1","index":0,"originalChoicePath":"Hub.0.5","originalThreadIndex":10,"targetPath":"Hub.0.c-0"},{"text":"Start Scene2 (only visible after Scene1)","index":0,"originalChoicePath":"Hub.0.14","originalThreadIndex":11,"targetPath":"Hub.0.c-1"},{"text":"Start Scene3 (only visible by changing ink internal state)","index":0,"originalChoicePath":"Hub.0.23","originalThreadIndex":12,"targetPath":"Hub.0.c-2"},{"text":"","index":0,"originalChoicePath":"Hub.0.24","originalThreadIndex":13,"targetPath":"Hub.0.c-3"}]}},"currentFlowName":"DEFAULT_FLOW","variablesState":{"ScenesAvailable":{"list":{"ScenesID.SceneAvailable_2":1}},"Level":1},"evalStack":[],"visitCounts":{},"turnIndices":{},"turnIdx":5,"storySeed":2,"previousRandom":0,"inkSaveVersion":9,"inkFormatVersion":20}`,
 			args:         args{gameModelV: struct{ CurrentTime int }{CurrentTime: 30}},
-			wantContains: []string{`"CurrentTime":30`, `"CurrencyMain":50000`, `"storySeed":30`},
+			wantContains: []string{`"storySeed":2`, `"Level":1`},
 		},
 		{
 			name:     "when game model list",
-			sEncoded: `{"choiceThreads":{"4":{"callstack":[{"cPath":"SCENE_Tuto1rst.0.6","idx":8,"exp":false,"type":0,"temp":{"temp_money":0,"$r":{"^->":"SCENE_Tuto1rst.0.6.$r1"}}}],"threadIndex":4,"previousContentObject":"SCENE_Tuto1rst.0.6.7"},"5":{"callstack":[{"cPath":"SCENE_Tuto1rst.0.7","idx":8,"exp":false,"type":0,"temp":{"temp_money":0,"$r":{"^->":"SCENE_Tuto1rst.0.7.$r1"}}}],"threadIndex":5,"previousContentObject":"SCENE_Tuto1rst.0.7.7"}},"callstackThreads":{"threads":[{"callstack":[{"exp":false,"type":0,"temp":{"temp_money":0,"$r":{"^->":"SCENE_Tuto1rst.0.7.$r1"}}}],"threadIndex":1,"previousContentObject":"SCENE_Tuto1rst.0.7.8"}],"threadCounter":5},"variablesState":{"CharactersID":{"list":{},"origins":["CharactersID"]},"ScenesID":{"list":{},"origins":["ScenesID"]},"ScenesPossible":{"list":{"ScenesID.Tuto1":2,"ScenesID.TutoTemps":4}},"PresentInShop":{"list":{}},"CurrentTime":15,"CurrencyMain":50000,"TutoTempsRetourGuerrier":0},"evalStack":[],"outputStream":["^ ","^Ceci est le tuto 1. Une première quete super facile !","\n"],"currentChoices":[{"text":"Veux tu choisir le premier choix?","index":0,"originalChoicePath":"SCENE_Tuto1rst.0.6.8","originalThreadIndex":4,"targetPath":"SCENE_Tuto1rst.0.c-0"},{"text":"Ou le deuxième?","index":1,"originalChoicePath":"SCENE_Tuto1rst.0.7.8","originalThreadIndex":5,"targetPath":"SCENE_Tuto1rst.0.c-1"}],"visitCounts":{"":1,"MENU.NewGame":1,"MENU":1,"Smalltalk":1,"Smalltalk.0":1,"Hub":1,"Hub.0.c-0":1,"SCENE_Tuto1rst":1},"turnIndices":{},"turnIdx":0,"storySeed":30,"previousRandom":0,"inkSaveVersion":8,"inkFormatVersion":19}`,
+			sEncoded: `{"flows":{"DEFAULT_FLOW":{"callstack":{"threads":[{"callstack":[{"exp":false,"type":0}],"threadIndex":0,"previousContentObject":"Hub.0.24"}],"threadCounter":13},"outputStream":[],"choiceThreads":{"10":{"callstack":[{"cPath":"Hub.0","idx":5,"exp":false,"type":0}],"threadIndex":10,"previousContentObject":"Hub.0.4"},"11":{"callstack":[{"cPath":"Hub.0","idx":14,"exp":false,"type":0}],"threadIndex":11,"previousContentObject":"Hub.0.13"},"12":{"callstack":[{"cPath":"Hub.0","idx":23,"exp":false,"type":0}],"threadIndex":12,"previousContentObject":"Hub.0.22"},"13":{"callstack":[{"cPath":"Hub.0","idx":24,"exp":false,"type":0}],"threadIndex":13,"previousContentObject":"Hub.0.23"}},"currentChoices":[{"text":"Start Scene1","index":0,"originalChoicePath":"Hub.0.5","originalThreadIndex":10,"targetPath":"Hub.0.c-0"},{"text":"Start Scene2 (only visible after Scene1)","index":0,"originalChoicePath":"Hub.0.14","originalThreadIndex":11,"targetPath":"Hub.0.c-1"},{"text":"Start Scene3 (only visible by changing ink internal state)","index":0,"originalChoicePath":"Hub.0.23","originalThreadIndex":12,"targetPath":"Hub.0.c-2"},{"text":"","index":0,"originalChoicePath":"Hub.0.24","originalThreadIndex":13,"targetPath":"Hub.0.c-3"}]}},"currentFlowName":"DEFAULT_FLOW","variablesState":{"ScenesAvailable":{"list":{"ScenesID.SceneAvailable_2":1}},"Level":1,"PresentInShop":{"list":{}}},"evalStack":[],"visitCounts":{},"turnIndices":{},"turnIdx":5,"storySeed":2,"previousRandom":0,"inkSaveVersion":9,"inkFormatVersion":20}`,
+
 			args: args{gameModelV: struct {
-				CurrentTime   int
+				//Already in state
+				Level int
+				//new
+				Score int
+				//Already in state
 				PresentInShop struct {
 					List map[string]int `json:"list"`
 				}
+				//new
+				Inventory struct {
+					List map[string]int `json:"list"`
+				}
 			}{
-				CurrentTime: 30,
+				Level: 2,
+				Score: 10,
 				PresentInShop: struct {
 					List map[string]int `json:"list"`
-				}{
-					map[string]int{
-						"CharactersID.Michel": 2,
-					},
-				},
+				}{map[string]int{"CharactersID.Michel": 2}},
+				Inventory: struct {
+					List map[string]int "json:\"list\""
+				}{map[string]int{"Bow": 1}},
 			}},
-			wantContains: []string{`"CurrentTime":30`, `"CurrencyMain":50000`, `"storySeed":30`, `"PresentInShop":{"list":{"CharactersID.Michel":2}}`},
+			wantContains: []string{`"storySeed":2`, `"Level":2`, `"Score":10`, `"PresentInShop":{"list":{"CharactersID.Michel":2}}`, `"Inventory":{"list":{"Bow":1}}`},
 		},
 	}
 	for _, tt := range tests {

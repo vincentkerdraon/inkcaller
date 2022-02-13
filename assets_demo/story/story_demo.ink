@@ -12,9 +12,6 @@ _ ContinueStory() when a choice was available and to move to next step.
 Each call is independent, and we provide the ink state each time. Meaning multiple stories can be executed at the same time. 
 It is possible to inject external data into the ink state, and read it from ink to make conditions. The variables must be declared initially in ink.
 
-* [Visit the Hub] ->Hub
-* {DEBUG} [INK_DEBUG] -> INK_DEBUG
-
 
 //Example of using ink internal variables.
 
@@ -29,16 +26,19 @@ VAR Level = 0
 // DEBUG mode adds a few shortcuts - remember to set to false in release!
 VAR DEBUG = true
 
+* [Visit the Hub] ->Hub
+* {DEBUG} [INK_DEBUG] -> INK_DEBUG
+
 === Hub
 
-* [Start Scene1] ->Scene1
-* {ScenesAvailable?SceneAvailable_2} [Start Scene2 (only visible after Scene1)] ->Scene2
-* {Level==1} [Start Scene3 (only visible by changing ink internal state)] ->Scene3
-* ->DONE
++ [Start Scene1] ->Scene1
++ {ScenesAvailable?SceneAvailable_2} [Start Scene2 (only visible after Scene1)] ->Scene2
++ {Level==1} [Start Scene3 (only visible by changing ink internal state)] ->Scene3
++ ->DONE
 
 === Scene1
 Welcome to Scene1.
-* Go to Scene1_1
++ Go to Scene1_1
 ->Scene1_1
 
 === Scene1_1
@@ -76,16 +76,16 @@ Maelle & Vincent
 === INK_DEBUG
 IN DEBUG MODE!
 
-* [Hub] ->Hub
-* [Hub NO DEBUG] 
++ [Hub] ->Hub
++ [Hub NO DEBUG] 
     ~DEBUG=false
     ->Hub
-* [Credits] ->Credits
-* [Hub with Scene2] 
++ [Credits] ->Credits
++ [Hub with Scene2] 
     ~ ScenesAvailable += (SceneAvailable_2) 
     ->Hub
-* [Hub with Scene3] 
++ [Hub with Scene3] 
     ~ Level = 1
     ->Hub
 
-->DONE
+- ->DONE

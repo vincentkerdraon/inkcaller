@@ -1,61 +1,37 @@
 package inkcaller
 
-import (
-	"encoding/json"
-)
-
 //InkState is based on Ink definition.
-//We are ignoring some fields.
+//We are ignoring many fields.
 //This is only for reading. Writing variables into the states uses another way.
 type InkState struct {
-	CallstackThreads CallstackThreads `json:"callstackThreads"`
-	//VariablesState contains the custom game state values, and also internal ink values. (merge, don't override)
-	VariablesState json.RawMessage  `json:"variablesState"`
-	OutputStream   []string         `json:"outputStream"`
-	CurrentChoices []CurrentChoice  `json:"currentChoices"`
-	VisitCounts    map[string]int64 `json:"visitCounts"`
+	Flows Flows `json:"flows"`
+	//TurnIdx increases by 1 every call. Starts at 0.
+	TurnIdx uint64 `json:"turnIdx"`
 }
 
-type CallstackThreads struct {
-	Threads []Thread `json:"threads"`
+type Flows struct {
+	DefaultFlow DefaultFlow `json:"DEFAULT_FLOW"`
 }
 
-type Thread struct {
-	Callstack []ThreadCallstack `json:"callstack"`
-}
-
-type ThreadCallstack struct {
-	Temp Temp `json:"temp"`
-}
-
-type Temp struct {
-	R R `json:"$r"`
-}
-
-type R struct {
-	Empty string `json:"^->"`
+type DefaultFlow struct {
+	//OutputStream is the text
+	OutputStream   []string        `json:"outputStream"`
+	CurrentChoices []CurrentChoice `json:"currentChoices"`
 }
 
 type CurrentChoice struct {
-	Text       string      `json:"text"`
-	Index      ChoiceIndex `json:"index"`
-	TargetPath string      `json:"targetPath"`
+	Text string `json:"text"`
+	//Index is is the arg to pick this choice
+	//20220212 This is always 0 in the exported JSON
+	//https://github.com/y-lohse/inkjs/issues/932
+	//Need fixup after decoding (use the position in the array)
+	Index      uint16 `json:"index"`
+	TargetPath string `json:"targetPath"`
 }
 
-func (s InkState) ID() string {
-	return s.CallstackThreads.Threads[0].Callstack[0].Temp.R.Empty
-}
-
-func NewInkStateMock(id string, text []string, choices []CurrentChoice) *InkState {
+func NewInkStateMock(turnIdx uint64, text []string, choices []CurrentChoice) *InkState {
 	return &InkState{
-		CallstackThreads: CallstackThreads{
-			Threads: []Thread{
-				{Callstack: []ThreadCallstack{
-					{Temp: Temp{R: R{Empty: id}}},
-				}},
-			},
-		},
-		CurrentChoices: choices,
-		OutputStream:   text,
+		Flows:   Flows{DefaultFlow: DefaultFlow{CurrentChoices: choices, OutputStream: text}},
+		TurnIdx: turnIdx,
 	}
 }

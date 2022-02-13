@@ -7,6 +7,7 @@ import (
 )
 
 type (
+	//InkTranslator is a guide on how to use the ink caller.
 	InkTranslator interface {
 		BeginStory(ctx context.Context, engineFilePath string, storyFilePath string, seed *inkcaller.Seed,
 		) (*inkcaller.InkState, *inkcaller.StateEncoded, error)
@@ -55,7 +56,7 @@ func (t *impl) GetResourceText(ctx context.Context, engineFilePath string, story
 	if err != nil {
 		return nil, err
 	}
-	return state.OutputStream, nil
+	return state.Flows.DefaultFlow.OutputStream, nil
 }
 
 func (t *impl) callAndDecode(ctx context.Context, engineFilePath string, storyFilePath string, seed *inkcaller.Seed, stateIn *inkcaller.StateEncoded, gameModelV map[string]interface{}, knotName *inkcaller.KnotName, choiceIndex *inkcaller.ChoiceIndex,

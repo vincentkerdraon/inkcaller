@@ -1,11 +1,13 @@
 # inkcaller
 
+See also the godoc https://pkg.go.dev/github.com/vincentkerdraon/inkcaller
+
 ## This library
 
 `InkCaller` is an API to call Ink. Each new call is independent and can be executing concurrently.\
 A call will force the ink state, (optional) set the seed, (optional) set the knot, (optional) answer a previous choice.\
 A call returns the current ink state (to inject into the next call). This state can be decoded to get the text, the choices.\
-This does not allow all the features of ink (e.g. no callback or external function).
+This does not allow all the features of ink (e.g. no callback / external function / multiple flows).
 
 Depending on your design, Ink will need to interact with the game model. Set needed data inside ink state in the input. Use formatted text and a parser for the actions.
 
@@ -57,6 +59,14 @@ inkState, inkStateEncoded, err = translator.GoToKnot(ctx, "ink.js", "story.json"
 if err != nil {panic(err)}
 fmt.Println(inkState.CurrentChoices[0].Text)
 ```
+
+## Advised flow for writing a story and using this lib
+
+Write on the editor inky. (Create yourself a debug knot to test everything as you write. See `INK_DEBUG` in the example.)\
+When you done writing, either use inky to `export as JSON`, or use the command line `inklecate -j -o story_demo.json story_demo.ink`.\
+This lib can read directly your output .json file.\
+You probably want to do this sequence `BeginStory() -> GoToKnot() -> ContinueStory() -> ContinueStory() -> ... -> GoToKnot() -> ContinueStory() ...`\
+Or to get story-independent strings `GetResourceText()` (externalize all strings for easy translation and maintenance, example: menu, credits ...)
 
 ## What is ink?
 

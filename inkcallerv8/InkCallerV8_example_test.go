@@ -25,7 +25,7 @@ func Example() {
 		panic(err)
 	}
 
-	//second call, use stateEncoded from the previous call.
+	//second call, always use stateEncoded from the previous call.
 	//go to knot
 	//make a choice
 	choice := inkcaller.ChoiceIndex(0)

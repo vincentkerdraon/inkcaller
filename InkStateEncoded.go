@@ -14,6 +14,14 @@ func (sEncoded StateEncoded) DecodeInkState() (*InkState, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	//20220212 Index is always 0 in the exported JSON
+	//https://github.com/y-lohse/inkjs/issues/932
+	//Need fixup after decoding (use the position in the array)
+	for idx := range state.Flows.DefaultFlow.CurrentChoices {
+		state.Flows.DefaultFlow.CurrentChoices[idx].Index = uint16(idx)
+	}
+
 	return state, nil
 }
 
