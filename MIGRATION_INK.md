@@ -15,16 +15,17 @@ New version is for:
 - in output state json: `"inkSaveVersion": 9`
 - in output state json: `"inkFormatVersion": 20`
 - with inkjs engine `v2.0.0` (https://unpkg.com/inkjs@2.0.0/dist/ink-es2015.js)
-- note the web export in inky editor is using the wrong version of inkjs.
+- note the web export in inklecate is using the wrong version of inkjs.
 
 ### Design choice on supporting 0.9
 
-The problem is the schema of the ink state changed.\
+The problem is the schema of the ink JSON state changed.\
 It's fine, this is internal to ink and they just have to be careful with the API.\
-But at the same time, it was very nice getting everything out of the state.
+But at the same time, it was very nice getting everything out of the state.\
+Version 1.0 is now using the JS API to get its data (but it is still possible to use the JSON state if needed).
 
-In this 1.0 version, `variablesState` is not showing the unchanged internal values. 
+In this `inkjs v2.0.0` version, `variablesState` is not showing the unchanged internal values. \
 But can still be used to inject data from the outside.
 
-By naming convention, `Ink v1.0` should be more stable than `Ink v0.9`. I decided I will not support the ink state struct for `Ink v0.9`.
+By naming convention, `Ink v1.0` should be more stable than `Ink v0.9` (and then also inkjs). I decided I will not support the ink state struct for `Ink v0.9`.\
 If it changes again in the future, I will think of supporting multiple version.

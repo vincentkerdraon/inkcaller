@@ -1,6 +1,6 @@
 name: Audit
 
-#FIXME This is not multi modules. 
+#FIXME This is not multi modules. Maybe go 1.18 will help with that?
 
 on:
   push:

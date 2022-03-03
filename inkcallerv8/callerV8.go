@@ -8,7 +8,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/vincentkerdraon/inkcaller"
+	"github.com/vincentkerdraon/inkcaller/inkcallerlib"
 	"rogchap.com/v8go"
 )
 
@@ -21,22 +21,32 @@ type (
 		enginesMutex      *sync.RWMutex
 	}
 
-	//performance: compiling is not worth it.
+	//20220207 performance: compiling is not worth it.
 	//same perf, more alloc, code more complicated
 	//I keep the code, hoping in the long run it is worth it (longer story file, better cache hit ratio in prod)
 
-	//performance: same for caching file content in map.
+	//20220207 performance: same for caching file content in map.
 	//benchmark is showing no diff compare to reading it each time.
 
 	fileCache struct {
 		content   string
 		codeCache *v8go.CompilerCachedData
 	}
+
+	CallRes struct {
+		Choices []Choice
+		Text    string
+		State   string
+	}
+	Choice struct {
+		Text  string `json:"text"`
+		Index uint16 `json:"index"`
+	}
 )
 
 const inkVirtualJSFilePath = "s.js"
 
-var _ inkcaller.InkCaller = (*impl)(nil)
+var _ inkcallerlib.InkCaller = (*impl)(nil)
 
 func NewInkCallerV8() *impl {
 	impl := &impl{
@@ -83,49 +93,25 @@ func (c *impl) Call(
 	ctx context.Context,
 	engineFilePath string,
 	storyFilePath string,
-	seed *inkcaller.Seed,
-	stateIn *inkcaller.StateEncoded,
-	knotName *inkcaller.KnotName,
-	choiceIndex *inkcaller.ChoiceIndex,
-) (*inkcaller.StateEncoded, error) {
+	opts ...inkcallerlib.InkCallerOptionsFunc,
+) (*inkcallerlib.InkCallerOutput, error) {
 	inkCtx, err := c.prepareInkContext(ctx, engineFilePath, storyFilePath)
 	if err != nil {
 		return nil, err
 	}
+	options := inkcallerlib.ReadOptions(opts)
 
-	execJs := `var story = new inkjs.Story(storyContent);`
-	if seed != nil {
-		//ink limitation
-		*seed = *seed % 100
-		execJs += fmt.Sprintf(`story.state.storySeed=%d;`, *seed)
-	}
-	if stateIn != nil {
-		execJs += fmt.Sprintf(`story.state.LoadJson(%q);`, *stateIn)
-	}
-	if knotName != nil {
-		execJs += fmt.Sprintf(`story.ChoosePathString(%q);`, *knotName)
-	}
-	if choiceIndex != nil {
-		execJs += fmt.Sprintf(`story.ChooseChoiceIndex(%d);`, *choiceIndex)
-	}
-	execJs += `story.ContinueMaximally();`
-	execJs += `story.state.toJson();`
-
-	val, err := c.v8RunScript(inkCtx, execJs)
+	execJs := c.prepareJS(options)
+	val, err := inkCtx.RunScript(execJs, inkVirtualJSFilePath)
 	if err != nil {
-		return nil, err
+		return nil, &InkV8Error{Source: execJs, Err: err}
 	}
-
-	stateJSON := inkcaller.StateEncoded(val.String())
-	return &stateJSON, nil
-}
-
-func (*impl) v8RunScript(inkCtx *v8go.Context, source string) (*v8go.Value, error) {
-	val, err := inkCtx.RunScript(source, inkVirtualJSFilePath)
+	res, err := c.decodeV8Res(options, val)
 	if err != nil {
-		return nil, &InkV8Error{Source: source, Err: err}
+		return nil, &InkV8Error{Source: execJs, Err: err}
 	}
-	return val, nil
+
+	return res, nil
 }
 
 func (*impl) compileFile(source string) (*v8go.CompilerCachedData, error) {

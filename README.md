@@ -18,24 +18,40 @@ Depending on your design, Ink will need to interact with the game model. Set nee
 ### Example using directly the inkcallerv8
 
 ```golang
-ctx := context.Background()
-caller := inkcallerv8.NewInkCallerV8()
+	caller := inkcallerv8.NewInkCallerV8()
 
-//first call, we don't have any ink state to provide yet.
-//we also want to set the seed.
-//this is going to return the top part (introduction) from the ink file.
+	//first call, we don't have an ink state to provide yet.
+	//- set seed
+	//- get ink JSON state + choices + no text
+	out, err := caller.Call(ctx, engineFilePath, storyFilePath,
+		//use WithInput... provide parameters
+		inkcallerlib.WithInputSeed(2),
+		//use WithOutput... pick what you want in the output
+		inkcallerlib.WithOutputLines(false),
+		inkcallerlib.WithOutputStateOut(true),
+		inkcallerlib.WithOutputChoices(true))
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println((*out.Choices)[0].Text)
 
-seed := inkcaller.Seed(2)
-stateEncoded, err := caller.Call(ctx, "ink.js", "story.json", &seed, nil, nil, nil)
-if err != nil {panic(err)}
+	//second call, always use StateOut from the previous call.
+	//- go to knot + make a choice
+	//- get text + no choice
+	out, err = caller.Call(ctx, engineFilePath, storyFilePath,
+		inkcallerlib.WithInputStateIn(*out.StateOut),
+		inkcallerlib.WithInputKnotName("Hub"),
+		inkcallerlib.WithInputChoiceIndex(0),
+		inkcallerlib.WithOutputChoices(false),
+		inkcallerlib.WithOutputLines(true))
 
-//second call, use stateEncoded from the previous call.
-//go to knot
-//make a choice
-choice := inkcaller.ChoiceIndex(0)
-knotName := inkcaller.KnotName("Hub")
-stateEncoded, err = caller.Call(ctx, "ink.js", "story.json", nil, stateEncoded, &knotName, &choice)
-if err != nil {panic(err)}
+	if err != nil {
+		panic(err)
+	}
+	if out.Choices != nil {
+		panic("Maybe there are choices available, but out.Choices is nil because not requested")
+	}
+	fmt.Println((*out.Lines)[0].Text)
 ```
 
 ### Example using the translator, decoding the state
@@ -43,21 +59,28 @@ if err != nil {panic(err)}
 The `translator` package guides the possible operations and decodes the ink state into a go struct. This is using inkcallerv8 as a dependency (or any mock for easy integration tests).
 
 ```golang
-ctx := context.Background()
-caller := inkcallerv8.NewInkCallerV8()
-translator := inktranslator.NewInkTranslator(caller)
+	var inkTranslator InkTranslator
+	ctx := context.Background()
 
-seed := inkcaller.Seed(2)
-inkState, inkStateEncoded, err := translator.BeginStory(ctx, "ink.js", "story.json", &seed)
-if err != nil {panic(err)}
-fmt.Println(inkState.OutputStream)
+	//First call
+	out, err := inkTranslator.Begin(ctx, "ink.js", "story.json", inkcallerlib.Seed(0))
+	if err != nil {
+		panic(err)
+	}
 
-knotName := inkcaller.KnotName("Hub")
-//A variable "Level" is declared in the ink file, overriding its value. 
-gameData:= map[string]interface{}{"Level":"5"}
-inkState, inkStateEncoded, err = translator.GoToKnot(ctx, "ink.js", "story.json", *inkStateEncoded, gameData, knotName)
-if err != nil {panic(err)}
-fmt.Println(inkState.CurrentChoices[0].Text)
+	//Using StateOut from previous call
+	//A variable "Level" is declared in the ink file, overriding its value.
+	gameData := map[string]interface{}{"Level": "5"}
+	out, err = inkTranslator.GoToKnot(ctx, "ink.js", "story.json", *out.StateOut, gameData, inkcallerlib.KnotName("Hub"))
+	if err != nil {
+		panic(err)
+	}
+
+	//From the previous state, making a choice.
+	out, err = inkTranslator.Decide(ctx, "ink.js", "story.json", *out.StateOut, gameData, inkcallerlib.ChoiceIndex(1))
+	if err != nil {
+		panic(err)
+	}
 ```
 
 ## Advised flow for writing a story and using this lib

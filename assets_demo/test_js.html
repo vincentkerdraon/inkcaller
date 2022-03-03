@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    (This is a JS tester)
+
+    <script src="inkjs_engine/2.0.0/ink.js"> </script>
+    <script src="story/story_demo.js"> </script>
+    <script>
+
+        var story = new inkjs.Story(storyContent);
+        res = {};
+        story.state.storySeed = 2;
+        story.state.LoadJson("{\"flows\":{\"DEFAULT_FLOW\":{\"callstack\":{\"threads\":[{\"callstack\":[{\"cPath\":\"\",\"idx\":0,\"exp\":false,\"type\":0}],\"threadIndex\":0}],\"threadCounter\":0},\"outputStream\":[],\"currentChoices\":[]}},\"currentFlowName\":\"DEFAULT_FLOW\",\"variablesState\":{},\"evalStack\":[],\"visitCounts\":{},\"turnIndices\":{},\"turnIdx\":-1,\"storySeed\":2,\"previousRandom\":0,\"inkSaveVersion\":9,\"inkFormatVersion\":20}");
+        story.ChoosePathString("Hub");
+
+        lines = [];
+        while (story.canContinue) {
+            lines.push({
+                Text: story.Continue(),
+                Tags: story.currentTags,
+            })
+        }
+        res.Lines = lines;
+
+        choices = [];
+        story.currentChoices.forEach(function (choice) {
+            choices.push({
+                SourcePath: choice.sourcePath,
+                Index: choice.index,
+                Text: choice.text
+            });
+        });
+        res.Choices = choices;
+        res.State = story.state.toJson();
+
+
+        console.log(res)
+    </script>
+
+</body>
+
+</html>

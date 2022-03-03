@@ -1,4 +1,4 @@
-package inkcaller
+package inkcallerlib
 
 type (
 	InkError struct{ Err error }

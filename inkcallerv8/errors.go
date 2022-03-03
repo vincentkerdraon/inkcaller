@@ -3,6 +3,7 @@ package inkcallerv8
 import "fmt"
 
 type (
+	//InkV8Error is an error inside the JS engine
 	InkV8Error struct {
 		Source string
 		Err    error

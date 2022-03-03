@@ -1,4 +1,5 @@
-﻿This is a sample ink file to use the ink caller library. 
+﻿#tag_global1 #tag_global2
+This is a sample ink file to use the ink caller library. 
 Please check the official doc on how to write ink syntax.
 
 This file is used in code examples.
@@ -31,15 +32,15 @@ VAR DEBUG = true
 
 === Hub
 
-+ [Start Scene1] ->Scene1
++ [Start Scene1] (On multiple lines 
+and with parenthesis) ->Scene1
 + {ScenesAvailable?SceneAvailable_2} [Start Scene2 (only visible after Scene1)] ->Scene2
 + {Level==1} [Start Scene3 (only visible by changing ink internal state)] ->Scene3
 + ->DONE
 
 === Scene1
-Welcome to Scene1.
-+ Go to Scene1_1
-->Scene1_1
+Welcome to Scene1. #tag1 #tag2
++ [Go to Scene1_1] ->Scene1_1
 
 === Scene1_1
 Welcome to Scene1_1.
@@ -48,7 +49,6 @@ Now Scene2 is available from the hub!
 
 Note you can't go back to the hub from here if you are using inky editor or the web export. To mitigate that, you could for example create a "INK_DEBUG" knot available in all the dead-ends to test outside the lib. And then parse and remove this choice when in production.
  ~ ScenesAvailable += (SceneAvailable_2)
- 
 ->DONE
 
 === Scene2

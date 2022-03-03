@@ -1,4 +1,4 @@
-package inkcaller
+package inkcallerlib
 
 import (
 	"encoding/json"
@@ -8,24 +8,7 @@ import (
 
 type StateEncoded string
 
-func (sEncoded StateEncoded) DecodeInkState() (*InkState, error) {
-	state := &InkState{}
-	err := json.Unmarshal([]byte(sEncoded), state)
-	if err != nil {
-		return nil, err
-	}
-
-	//20220212 Index is always 0 in the exported JSON
-	//https://github.com/y-lohse/inkjs/issues/932
-	//Need fixup after decoding (use the position in the array)
-	for idx := range state.Flows.DefaultFlow.CurrentChoices {
-		state.Flows.DefaultFlow.CurrentChoices[idx].Index = uint16(idx)
-	}
-
-	return state, nil
-}
-
-func (sEncoded StateEncoded) IncludeGameData(gameModelMV map[string]interface{}) (*StateEncoded, error) {
+func (sEncoded *StateEncoded) IncludeGameData(gameModelMV map[string]interface{}) error {
 	//this is a bit tricky.
 	//state.VariablesState contains multiple things.
 	// - (keep untouched the ink internal variables, and the rest of the state)
@@ -34,26 +17,25 @@ func (sEncoded StateEncoded) IncludeGameData(gameModelMV map[string]interface{})
 
 	//We could use a variable prefix, that we could always delete.
 	//Instead, assume gameModelV is always having all the keys.
-	//even if empty, the key should be present.
-	//(using reflexion, so json conventions won't matter)
+	//even to empty, the key should be present.
 
-	bEncoded := []byte(sEncoded)
+	bEncoded := []byte(*sEncoded)
 
 	state := make(map[string]interface{})
 	if err := json.Unmarshal(bEncoded, &state); err != nil {
-		return nil, err
+		return err
 	}
 
 	var inkStateOnlyVariable struct {
 		VariablesState json.RawMessage `json:"variablesState"`
 	}
 	if err := json.Unmarshal(bEncoded, &inkStateOnlyVariable); err != nil {
-		return nil, err
+		return err
 	}
 
 	inkVariables := make(map[string]interface{})
 	if err := json.Unmarshal(inkStateOnlyVariable.VariablesState, &inkVariables); err != nil {
-		return nil, err
+		return err
 	}
 
 	for k, v := range gameModelMV {
@@ -62,21 +44,23 @@ func (sEncoded StateEncoded) IncludeGameData(gameModelMV map[string]interface{})
 
 	b, err := json.Marshal(inkVariables)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	state["variablesState"] = json.RawMessage(b)
-
 	bState, err := json.Marshal(state)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	sState := StateEncoded(string(bState))
-	return &sState, nil
+	*sEncoded = StateEncoded(bState)
+	return nil
 }
 
+//ConvertVtoMV is a helper to transform any structure in a suitable game data interface
 func (StateEncoded) ConvertVtoMV(gameModelV interface{}) (map[string]interface{}, error) {
+	//(using reflexion, so json conventions won't matter)
+
 	res := map[string]interface{}{}
 	v := reflect.ValueOf(gameModelV)
 	for i := 0; i < v.NumField(); i++ {
