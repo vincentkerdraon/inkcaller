@@ -38,7 +38,7 @@ while (story.canContinue) {
 	line={};
 	line.Text=story.Continue();`
 	if options.Output.Lines {
-		if options.Output.Choices {
+		if options.Output.LineTags {
 			execJs += `
 	line.Tags=story.currentTags;`
 		}
