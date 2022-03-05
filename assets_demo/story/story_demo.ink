@@ -1,4 +1,5 @@
-﻿#tag_global1 #tag_global2
+﻿#tag_global1 
+#tag_global2
 This is a sample ink file to use the ink caller library. 
 Please check the official doc on how to write ink syntax.
 

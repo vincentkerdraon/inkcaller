@@ -83,6 +83,7 @@ func (t *impl) Begin(
 		inkcallerlib.WithInputSeed(seed),
 		inkcallerlib.WithOutputGlobalTags(true),
 		inkcallerlib.WithOutputStateOut(true),
+		inkcallerlib.WithOutputTurnIndex(true),
 	)
 	if err != nil {
 		return nil, inkcallerlib.InkError{Err: err}
@@ -106,6 +107,8 @@ func (t *impl) GoToKnot(
 		inkcallerlib.WithInputKnotName(knotName),
 		inkcallerlib.WithOutputStateOut(true),
 		inkcallerlib.WithOutputLines(true),
+		inkcallerlib.WithOutputChoices(true),
+		inkcallerlib.WithOutputTurnIndex(true),
 	)
 	if err != nil {
 		return nil, inkcallerlib.InkError{Err: err}
@@ -129,6 +132,7 @@ func (t *impl) Decide(ctx context.Context,
 		inkcallerlib.WithOutputStateOut(true),
 		inkcallerlib.WithOutputLines(true),
 		inkcallerlib.WithOutputLineTags(true),
+		inkcallerlib.WithOutputTurnIndex(true),
 	)
 	if err != nil {
 		return nil, inkcallerlib.InkError{Err: err}
