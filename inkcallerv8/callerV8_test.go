@@ -15,7 +15,7 @@ func Test_impl_Call_WhenStoryJSON(t *testing.T) {
 
 	storyFilePath, _ := filepath.Abs("../assets_demo/story/story_demo.json")
 	engineFilePath, _ := filepath.Abs("../assets_demo/inkjs_engine/2.0.0/ink.js")
-	checkFunc := callAndValidate(t, NewInkCallerV8(), context.Background(), storyFilePath, engineFilePath)
+	checkFunc := callAndValidate(context.Background(), t, NewInkCallerV8(), storyFilePath, engineFilePath)
 
 	//////
 
@@ -142,7 +142,7 @@ func Test_impl_Call_WhenStoryJSON(t *testing.T) {
 	_ = out
 }
 
-func callAndValidate(t *testing.T, tr *impl, ctx context.Context, storyFilePath string, engineFilePath string) func(testCase string, expected inkcallerlib.InkCallerOutput, opts ...inkcallerlib.InkCallerOptionsFunc) *inkcallerlib.InkCallerOutput {
+func callAndValidate(ctx context.Context, t *testing.T, tr *impl, storyFilePath string, engineFilePath string) func(testCase string, expected inkcallerlib.InkCallerOutput, opts ...inkcallerlib.InkCallerOptionsFunc) *inkcallerlib.InkCallerOutput {
 	return func(testCase string, expected inkcallerlib.InkCallerOutput, opts ...inkcallerlib.InkCallerOptionsFunc) *inkcallerlib.InkCallerOutput {
 		out, err := tr.Call(ctx, engineFilePath, storyFilePath, opts...)
 		if err != nil {

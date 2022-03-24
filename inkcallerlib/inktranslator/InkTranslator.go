@@ -1,4 +1,4 @@
-//package inktranslator is a guide to use InkCaller.
+//Package inktranslator is a guide to use InkCaller.
 package inktranslator
 
 import (
