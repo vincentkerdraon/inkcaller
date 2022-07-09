@@ -2,6 +2,11 @@
 
 _Versioning with ink + inkjs is complicated._
 
+## Ink 1.0, new version inkjs
+
+- inkjs engine `v2.1.0` (https://unpkg.com/inkjs@2.1.0/dist/ink.js)
+    - with this version, it would be possible to compile story.ink directly in js.
+
 ## Ink 0.9 -> Ink 1.0
 
 First version of this lib was using:

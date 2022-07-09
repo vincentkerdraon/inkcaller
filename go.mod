@@ -5,7 +5,7 @@ replace github.com/vincentkerdraon/inkcaller/inkcallerlib => ./inkcallerlib
 go 1.18
 
 require (
-	github.com/vincentkerdraon/inkcaller/inkcallerlib v0.0.0-20220303023350-a8b285e360db
-	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
+	github.com/vincentkerdraon/inkcaller/inkcallerlib v0.0.0-20220324184416-1a0971bbb504
+	golang.org/x/sync v0.0.0-20220601150217-0de741cfad7f
 	rogchap.com/v8go v0.7.0
 )
