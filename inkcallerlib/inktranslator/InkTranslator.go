@@ -133,6 +133,7 @@ func (t *impl) Decide(ctx context.Context,
 		inkcallerlib.WithOutputLines(true),
 		inkcallerlib.WithOutputLineTags(true),
 		inkcallerlib.WithOutputTurnIndex(true),
+		inkcallerlib.WithOutputChoices(true),
 	)
 	if err != nil {
 		return nil, inkcallerlib.InkError{Err: err}
