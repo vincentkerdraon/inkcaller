@@ -2,6 +2,7 @@ package inkcallerlib
 
 import (
 	"context"
+	"math"
 	"strconv"
 )
 
@@ -63,6 +64,10 @@ type (
 		TurnIndex *TurnIndex
 	}
 )
+
+func NewSeedFromUint64(i uint64) Seed {
+	return Seed(i % math.MaxInt8)
+}
 
 func (i TurnIndex) String() string {
 	return strconv.Itoa(int(i))
