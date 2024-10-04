@@ -22,7 +22,7 @@ type (
 	}
 
 	//20220207 performance: compiling is not worth it.
-	//same perf, more alloc, code more complicated
+	//same perf, more allocs, code more complicated
 	//I keep the code, hoping in the long run it is worth it (longer story file, better cache hit ratio in prod)
 
 	//20220207 performance: same for caching file content in map.
