@@ -2,12 +2,11 @@
 <html>
 
 <body>
-    (This is a JS tester)
+    (This is a JS tester, check console)
 
-    <script src="inkjs_engine/2.0.0/ink.js"> </script>
+    <script src="inkjs_engine/2.3.0/ink.js"> </script>
     <script src="story/story_demo.js"> </script>
     <script>
-
         var story = new inkjs.Story(storyContent);
         res = {};
         story.state.storySeed = 2;
@@ -33,8 +32,7 @@
         });
         res.Choices = choices;
         res.State = story.state.toJson();
-
-
+        res.TurnIndex = story.state.currentTurnIndex;
         console.log(res)
     </script>
 

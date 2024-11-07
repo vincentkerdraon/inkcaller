@@ -14,12 +14,12 @@ func Test_impl_Call_WhenStoryJSON(t *testing.T) {
 	//This is an integration test, following story_demo.json
 
 	storyFilePath, _ := filepath.Abs("../assets_demo/story/story_demo.json")
-	engineFilePath, _ := filepath.Abs("../assets_demo/inkjs_engine/2.0.0/ink.js")
+	engineFilePath, _ := filepath.Abs("../assets_demo/inkjs_engine/2.3.0/ink.js")
 	checkFunc := callAndValidate(context.Background(), t, NewInkCallerV8(), storyFilePath, engineFilePath)
 
 	//////
 
-	expectedStateOut := inkcallerlib.StateEncoded(`{"flows":{"DEFAULT_FLOW":{"callstack":{"threads":[{"callstack":[{"exp":false,"type":0}],"threadIndex":0,"previousContentObject":"0.34"}],"threadCounter":2},"outputStream":["^It is possible to inject external data into the ink state, and read it from ink to make conditions. The variables must be declared initially in ink.","\n"],"choiceThreads":{"1":{"callstack":[{"cPath":"0","idx":27,"exp":false,"type":0}],"threadIndex":1,"previousContentObject":"0.26"},"2":{"callstack":[{"cPath":"0","idx":34,"exp":false,"type":0}],"threadIndex":2,"previousContentObject":"0.33"}},"currentChoices":[{"text":"Visit the Hub","index":0,"originalChoicePath":"0.27","originalThreadIndex":1,"targetPath":"0.c-0"},{"text":"INK_DEBUG","index":0,"originalChoicePath":"0.34","originalThreadIndex":2,"targetPath":"0.c-1"}]}},"currentFlowName":"DEFAULT_FLOW","variablesState":{},"evalStack":[],"visitCounts":{},"turnIndices":{},"turnIdx":-1,"storySeed":2,"previousRandom":0,"inkSaveVersion":9,"inkFormatVersion":20}`)
+	expectedStateOut := inkcallerlib.StateEncoded(`{"flows":{"DEFAULT_FLOW":{"callstack":{"threads":[{"callstack":[{"exp":false,"type":0}],"threadIndex":0,"previousContentObject":"0.38"}],"threadCounter":2},"outputStream":["^It is possible to inject external data into the ink state, and read it from ink to make conditions. The variables must be declared initially in ink.","\n"],"choiceThreads":{"1":{"callstack":[{"cPath":"0","idx":31,"exp":false,"type":0}],"threadIndex":1,"previousContentObject":"0.30"},"2":{"callstack":[{"cPath":"0","idx":38,"exp":false,"type":0}],"threadIndex":2,"previousContentObject":"0.37"}},"currentChoices":[{"text":"Visit the Hub","index":0,"originalChoicePath":"0.31","originalThreadIndex":1,"targetPath":"0.c-0","tags":[]},{"text":"INK_DEBUG","index":0,"originalChoicePath":"0.38","originalThreadIndex":2,"targetPath":"0.c-1","tags":[]}]}},"currentFlowName":"DEFAULT_FLOW","variablesState":{},"evalStack":[],"visitCounts":{},"turnIndices":{},"turnIdx":-1,"storySeed":2,"previousRandom":0,"inkSaveVersion":10,"inkFormatVersion":21}`)
 	expected := inkcallerlib.InkCallerOutput{
 		StateOut:   &expectedStateOut,
 		GlobalTags: &[]inkcallerlib.Tag{"tag_global1", "tag_global2"},
@@ -31,7 +31,7 @@ func Test_impl_Call_WhenStoryJSON(t *testing.T) {
 	)
 
 	//////
-	expectedStateOut = inkcallerlib.StateEncoded(`{"flows":{"DEFAULT_FLOW":{"callstack":{"threads":[{"callstack":[{"exp":false,"type":0}],"threadIndex":0,"previousContentObject":"Hub.0.24"}],"threadCounter":4},"outputStream":[],"choiceThreads":{"3":{"callstack":[{"cPath":"Hub.0","idx":5,"exp":false,"type":0}],"threadIndex":3,"previousContentObject":"Hub.0.4"},"4":{"callstack":[{"cPath":"Hub.0","idx":24,"exp":false,"type":0}],"threadIndex":4,"previousContentObject":"Hub.0.23"}},"currentChoices":[{"text":"Start Scene1","index":0,"originalChoicePath":"Hub.0.5","originalThreadIndex":3,"targetPath":"Hub.0.c-0"},{"text":"","index":0,"originalChoicePath":"Hub.0.24","originalThreadIndex":4,"targetPath":"Hub.0.c-3"}]}},"currentFlowName":"DEFAULT_FLOW","variablesState":{},"evalStack":[],"visitCounts":{},"turnIndices":{},"turnIdx":0,"storySeed":2,"previousRandom":0,"inkSaveVersion":9,"inkFormatVersion":20}`)
+	expectedStateOut = inkcallerlib.StateEncoded(`{"flows":{"DEFAULT_FLOW":{"callstack":{"threads":[{"callstack":[{"exp":false,"type":0}],"threadIndex":0,"previousContentObject":"Hub.0.24"}],"threadCounter":4},"outputStream":[],"choiceThreads":{"3":{"callstack":[{"cPath":"Hub.0","idx":5,"exp":false,"type":0}],"threadIndex":3,"previousContentObject":"Hub.0.4"},"4":{"callstack":[{"cPath":"Hub.0","idx":24,"exp":false,"type":0}],"threadIndex":4,"previousContentObject":"Hub.0.23"}},"currentChoices":[{"text":"Start Scene1","index":0,"originalChoicePath":"Hub.0.5","originalThreadIndex":3,"targetPath":"Hub.0.c-0","tags":[]},{"text":"","index":0,"originalChoicePath":"Hub.0.24","originalThreadIndex":4,"targetPath":"Hub.0.c-3","tags":[]}]}},"currentFlowName":"DEFAULT_FLOW","variablesState":{},"evalStack":[],"visitCounts":{},"turnIndices":{},"turnIdx":0,"storySeed":2,"previousRandom":0,"inkSaveVersion":10,"inkFormatVersion":21}`)
 	turnIndex := inkcallerlib.TurnIndex(0)
 	expected = inkcallerlib.InkCallerOutput{
 		StateOut: &expectedStateOut,
@@ -51,7 +51,7 @@ func Test_impl_Call_WhenStoryJSON(t *testing.T) {
 	)
 
 	//////
-	expectedStateOut = inkcallerlib.StateEncoded(`{"flows":{"DEFAULT_FLOW":{"callstack":{"threads":[{"callstack":[{"exp":false,"type":0}],"threadIndex":3,"previousContentObject":"Scene1.0.9"}],"threadCounter":5},"outputStream":["^and with parenthesis) ","^Welcome to Scene1. ",{"#":"tag1"},{"#":"tag2"},"\n"],"choiceThreads":{"5":{"callstack":[{"cPath":"Scene1.0","idx":9,"exp":false,"type":0}],"threadIndex":5,"previousContentObject":"Scene1.0.8"}},"currentChoices":[{"text":"Go to Scene1_1","index":0,"originalChoicePath":"Scene1.0.9","originalThreadIndex":5,"targetPath":"Scene1.0.c-0"}]}},"currentFlowName":"DEFAULT_FLOW","variablesState":{},"evalStack":[],"visitCounts":{},"turnIndices":{},"turnIdx":1,"storySeed":2,"previousRandom":0,"inkSaveVersion":9,"inkFormatVersion":20}`)
+	expectedStateOut = inkcallerlib.StateEncoded(`{"flows":{"DEFAULT_FLOW":{"callstack":{"threads":[{"callstack":[{"exp":false,"type":0}],"threadIndex":3,"previousContentObject":"Scene1.0.13"}],"threadCounter":5},"outputStream":["^and with parenthesis) ","^Welcome to Scene1. ","#","^tag1 ","/#","#","^tag2","/#","\n"],"choiceThreads":{"5":{"callstack":[{"cPath":"Scene1.0","idx":13,"exp":false,"type":0}],"threadIndex":5,"previousContentObject":"Scene1.0.12"}},"currentChoices":[{"text":"Go to Scene1_1","index":0,"originalChoicePath":"Scene1.0.13","originalThreadIndex":5,"targetPath":"Scene1.0.c-0","tags":[]}]}},"currentFlowName":"DEFAULT_FLOW","variablesState":{},"evalStack":[],"visitCounts":{},"turnIndices":{},"turnIdx":1,"storySeed":2,"previousRandom":0,"inkSaveVersion":10,"inkFormatVersion":21}`)
 	turnIndex = inkcallerlib.TurnIndex(1)
 	expected = inkcallerlib.InkCallerOutput{
 		StateOut: &expectedStateOut,
@@ -63,7 +63,7 @@ func Test_impl_Call_WhenStoryJSON(t *testing.T) {
 			{Text: "and with parenthesis) Welcome to Scene1.\n", Tags: &[]inkcallerlib.Tag{"tag1", "tag2"}},
 		},
 		Choices: &[]inkcallerlib.Choice{
-			{Index: 0, Text: "Go to Scene1_1", SourcePath: "Scene1.0.9"},
+			{Index: 0, Text: "Go to Scene1_1", SourcePath: "Scene1.0.13"},
 		},
 		TurnIndex: &turnIndex,
 	}
@@ -79,7 +79,7 @@ func Test_impl_Call_WhenStoryJSON(t *testing.T) {
 	)
 
 	//////
-	expectedStateOut = inkcallerlib.StateEncoded(`{"flows":{"DEFAULT_FLOW":{"callstack":{"threads":[{"callstack":[{"exp":false,"type":0}],"threadIndex":5,"previousContentObject":"Scene1_1.13"}],"threadCounter":5},"outputStream":["^Note you can't go back to the hub from here if you are using inky editor or the web export. To mitigate that, you could for example create a \"INK_DEBUG\" knot available in all the dead-ends to test outside the lib. And then parse and remove this choice when in production.","\n"],"currentChoices":[]}},"currentFlowName":"DEFAULT_FLOW","variablesState":{"ScenesAvailable":{"list":{"ScenesID.SceneAvailable_2":1}}},"evalStack":[],"visitCounts":{},"turnIndices":{},"turnIdx":2,"storySeed":2,"previousRandom":0,"inkSaveVersion":9,"inkFormatVersion":20}`)
+	expectedStateOut = inkcallerlib.StateEncoded(`{"flows":{"DEFAULT_FLOW":{"callstack":{"threads":[{"callstack":[{"exp":false,"type":0}],"threadIndex":5,"previousContentObject":"Scene1_1.13"}],"threadCounter":5},"outputStream":["^Note you can't go back to the hub from here if you are using inky editor or the web export. To mitigate that, you could for example create a \"INK_DEBUG\" knot available in all the dead-ends to test outside the lib. And then parse and remove this choice when in production.","\n"],"currentChoices":[]}},"currentFlowName":"DEFAULT_FLOW","variablesState":{"ScenesAvailable":{"list":{"ScenesID.SceneAvailable_2":1}}},"evalStack":[],"visitCounts":{},"turnIndices":{},"turnIdx":2,"storySeed":2,"previousRandom":0,"inkSaveVersion":10,"inkFormatVersion":21}`)
 	expected = inkcallerlib.InkCallerOutput{
 		StateOut: &expectedStateOut,
 		Lines: &[]inkcallerlib.Line{
@@ -101,7 +101,7 @@ func Test_impl_Call_WhenStoryJSON(t *testing.T) {
 	)
 
 	//////
-	expectedStateOut = inkcallerlib.StateEncoded(`{"flows":{"DEFAULT_FLOW":{"callstack":{"threads":[{"callstack":[{"exp":false,"type":0}],"threadIndex":0,"previousContentObject":"Hub.0.24"}],"threadCounter":8},"outputStream":[],"choiceThreads":{"6":{"callstack":[{"cPath":"Hub.0","idx":5,"exp":false,"type":0}],"threadIndex":6,"previousContentObject":"Hub.0.4"},"7":{"callstack":[{"cPath":"Hub.0","idx":14,"exp":false,"type":0}],"threadIndex":7,"previousContentObject":"Hub.0.13"},"8":{"callstack":[{"cPath":"Hub.0","idx":24,"exp":false,"type":0}],"threadIndex":8,"previousContentObject":"Hub.0.23"}},"currentChoices":[{"text":"Start Scene1","index":0,"originalChoicePath":"Hub.0.5","originalThreadIndex":6,"targetPath":"Hub.0.c-0"},{"text":"Start Scene2 (only visible after Scene1)","index":1,"originalChoicePath":"Hub.0.14","originalThreadIndex":7,"targetPath":"Hub.0.c-1"},{"text":"","index":0,"originalChoicePath":"Hub.0.24","originalThreadIndex":8,"targetPath":"Hub.0.c-3"}]}},"currentFlowName":"DEFAULT_FLOW","variablesState":{"ScenesAvailable":{"list":{"ScenesID.SceneAvailable_2":1}}},"evalStack":[],"visitCounts":{},"turnIndices":{},"turnIdx":3,"storySeed":2,"previousRandom":0,"inkSaveVersion":9,"inkFormatVersion":20}`)
+	expectedStateOut = inkcallerlib.StateEncoded(`{"flows":{"DEFAULT_FLOW":{"callstack":{"threads":[{"callstack":[{"exp":false,"type":0}],"threadIndex":0,"previousContentObject":"Hub.0.24"}],"threadCounter":8},"outputStream":[],"choiceThreads":{"6":{"callstack":[{"cPath":"Hub.0","idx":5,"exp":false,"type":0}],"threadIndex":6,"previousContentObject":"Hub.0.4"},"7":{"callstack":[{"cPath":"Hub.0","idx":14,"exp":false,"type":0}],"threadIndex":7,"previousContentObject":"Hub.0.13"},"8":{"callstack":[{"cPath":"Hub.0","idx":24,"exp":false,"type":0}],"threadIndex":8,"previousContentObject":"Hub.0.23"}},"currentChoices":[{"text":"Start Scene1","index":0,"originalChoicePath":"Hub.0.5","originalThreadIndex":6,"targetPath":"Hub.0.c-0","tags":[]},{"text":"Start Scene2 (only visible after Scene1)","index":1,"originalChoicePath":"Hub.0.14","originalThreadIndex":7,"targetPath":"Hub.0.c-1","tags":[]},{"text":"","index":0,"originalChoicePath":"Hub.0.24","originalThreadIndex":8,"targetPath":"Hub.0.c-3","tags":[]}]}},"currentFlowName":"DEFAULT_FLOW","variablesState":{"ScenesAvailable":{"list":{"ScenesID.SceneAvailable_2":1}}},"evalStack":[],"visitCounts":{},"turnIndices":{},"turnIdx":3,"storySeed":2,"previousRandom":0,"inkSaveVersion":10,"inkFormatVersion":21}`)
 	expected = inkcallerlib.InkCallerOutput{
 		StateOut: &expectedStateOut,
 		Choices: &[]inkcallerlib.Choice{
@@ -122,7 +122,7 @@ func Test_impl_Call_WhenStoryJSON(t *testing.T) {
 	// get access to scene 3, not possible from inside ink, needs a change in variables.
 	stateEncodedWithGameData := inkcallerlib.StateEncoded(strings.ReplaceAll(string(*out.StateOut), `"variablesState":{`, `"variablesState":{"Level":1,`))
 
-	expectedStateOut = inkcallerlib.StateEncoded(`{"flows":{"DEFAULT_FLOW":{"callstack":{"threads":[{"callstack":[{"exp":false,"type":0}],"threadIndex":0,"previousContentObject":"Hub.0.24"}],"threadCounter":12},"outputStream":[],"choiceThreads":{"9":{"callstack":[{"cPath":"Hub.0","idx":5,"exp":false,"type":0}],"threadIndex":9,"previousContentObject":"Hub.0.4"},"10":{"callstack":[{"cPath":"Hub.0","idx":14,"exp":false,"type":0}],"threadIndex":10,"previousContentObject":"Hub.0.13"},"11":{"callstack":[{"cPath":"Hub.0","idx":23,"exp":false,"type":0}],"threadIndex":11,"previousContentObject":"Hub.0.22"},"12":{"callstack":[{"cPath":"Hub.0","idx":24,"exp":false,"type":0}],"threadIndex":12,"previousContentObject":"Hub.0.23"}},"currentChoices":[{"text":"Start Scene1","index":0,"originalChoicePath":"Hub.0.5","originalThreadIndex":9,"targetPath":"Hub.0.c-0"},{"text":"Start Scene2 (only visible after Scene1)","index":1,"originalChoicePath":"Hub.0.14","originalThreadIndex":10,"targetPath":"Hub.0.c-1"},{"text":"Start Scene3 (only visible by changing ink internal state)","index":2,"originalChoicePath":"Hub.0.23","originalThreadIndex":11,"targetPath":"Hub.0.c-2"},{"text":"","index":0,"originalChoicePath":"Hub.0.24","originalThreadIndex":12,"targetPath":"Hub.0.c-3"}]}},"currentFlowName":"DEFAULT_FLOW","variablesState":{"ScenesAvailable":{"list":{"ScenesID.SceneAvailable_2":1}},"Level":1},"evalStack":[],"visitCounts":{},"turnIndices":{},"turnIdx":4,"storySeed":2,"previousRandom":0,"inkSaveVersion":9,"inkFormatVersion":20}`)
+	expectedStateOut = inkcallerlib.StateEncoded(`{"flows":{"DEFAULT_FLOW":{"callstack":{"threads":[{"callstack":[{"exp":false,"type":0}],"threadIndex":0,"previousContentObject":"Hub.0.24"}],"threadCounter":12},"outputStream":[],"choiceThreads":{"9":{"callstack":[{"cPath":"Hub.0","idx":5,"exp":false,"type":0}],"threadIndex":9,"previousContentObject":"Hub.0.4"},"10":{"callstack":[{"cPath":"Hub.0","idx":14,"exp":false,"type":0}],"threadIndex":10,"previousContentObject":"Hub.0.13"},"11":{"callstack":[{"cPath":"Hub.0","idx":23,"exp":false,"type":0}],"threadIndex":11,"previousContentObject":"Hub.0.22"},"12":{"callstack":[{"cPath":"Hub.0","idx":24,"exp":false,"type":0}],"threadIndex":12,"previousContentObject":"Hub.0.23"}},"currentChoices":[{"text":"Start Scene1","index":0,"originalChoicePath":"Hub.0.5","originalThreadIndex":9,"targetPath":"Hub.0.c-0","tags":[]},{"text":"Start Scene2 (only visible after Scene1)","index":1,"originalChoicePath":"Hub.0.14","originalThreadIndex":10,"targetPath":"Hub.0.c-1","tags":[]},{"text":"Start Scene3 (only visible by changing ink internal state)","index":2,"originalChoicePath":"Hub.0.23","originalThreadIndex":11,"targetPath":"Hub.0.c-2","tags":[]},{"text":"","index":0,"originalChoicePath":"Hub.0.24","originalThreadIndex":12,"targetPath":"Hub.0.c-3","tags":[]}]}},"currentFlowName":"DEFAULT_FLOW","variablesState":{"ScenesAvailable":{"list":{"ScenesID.SceneAvailable_2":1}},"Level":1},"evalStack":[],"visitCounts":{},"turnIndices":{},"turnIdx":4,"storySeed":2,"previousRandom":0,"inkSaveVersion":10,"inkFormatVersion":21}`)
 	expected = inkcallerlib.InkCallerOutput{
 		StateOut: &expectedStateOut,
 		Choices: &[]inkcallerlib.Choice{
@@ -227,7 +227,7 @@ func callAndValidate(ctx context.Context, t *testing.T, tr *impl, storyFilePath 
 func Test_impl_Call_WhenStoryJS(t *testing.T) {
 	ctx := context.Background()
 	storyFilePath, _ := filepath.Abs("../assets_demo/story/story_demo.js")
-	engineFilePath, _ := filepath.Abs("../assets_demo/inkjs_engine/2.0.0/ink.js")
+	engineFilePath, _ := filepath.Abs("../assets_demo/inkjs_engine/2.3.0/ink.js")
 
 	tr := NewInkCallerV8()
 	_, err := tr.Call(ctx, engineFilePath, storyFilePath)

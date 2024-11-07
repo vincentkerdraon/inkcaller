@@ -2,6 +2,11 @@
 
 _Versioning with ink + inkjs is complicated._
 
+## Ink 1.2.0
+
+- https://github.com/inkle/ink/releases/tag/v.1.2.0
+- inkjs engine `v2.3.0` (https://unpkg.com/inkjs@2.3.0/dist/ink.js)
+
 ## Ink 1.0, new version inkjs
 
 - inkjs engine `v2.1.0` (https://unpkg.com/inkjs@2.1.0/dist/ink.js)
