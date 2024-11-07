@@ -2,7 +2,7 @@ module github.com/vincentkerdraon/inkcaller
 
 replace github.com/vincentkerdraon/inkcaller/inkcallerlib => ./inkcallerlib
 
-go 1.18
+go 1.23
 
 require (
 	github.com/vincentkerdraon/inkcaller/inkcallerlib v0.0.0-20241004162243-b437b2929cad
