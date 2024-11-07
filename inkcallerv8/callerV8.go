@@ -3,6 +3,7 @@ package inkcallerv8
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -104,6 +105,11 @@ func (c *impl) Call(
 	execJs := c.prepareJS(options)
 	val, err := inkCtx.RunScript(execJs, inkVirtualJSFilePath)
 	if err != nil {
+		var JSError *v8go.JSError
+		if errors.As(err, &JSError) {
+			//Special formatting with Message+Location+StackTrace when using %+v
+			return nil, &InkV8Error{Source: execJs, Err: fmt.Errorf("%+v, ", JSError)}
+		}
 		return nil, &InkV8Error{Source: execJs, Err: err}
 	}
 	res, err := c.decodeV8Res(options, val)
