@@ -1,0 +1,41 @@
+# Custom bashrc for InkCaller development container
+
+# Source the default bashrc if it exists
+if [ -f /etc/bash.bashrc ]; then
+    . /etc/bash.bashrc
+fi
+
+# Go environment
+export GOPATH=/go
+export PATH=$GOPATH/bin:$PATH
+
+# Useful aliases for Go development
+alias gob='go build'
+alias gor='go run'
+alias got='go test'
+alias gotv='go test -v'
+alias goc='go clean'
+alias gom='go mod'
+alias gof='go fmt'
+alias goi='go install'
+
+# Project-specific aliases
+alias test-all='go test ./...'
+alias test-verbose='go test -v ./...'
+alias build-all='go build ./...'
+alias lint='golangci-lint run'
+
+# Enhanced prompt
+PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+
+# History settings
+HISTSIZE=1000
+HISTFILESIZE=2000
+shopt -s histappend
+
+# Auto-completion
+complete -C /usr/local/go/bin/go go
+
+echo "🚀 InkCaller development environment ready!"
+echo "Go version: $(go version)"
+echo "Available aliases: gob, gor, got, gotv, goc, gom, gof, goi, test-all, test-verbose, build-all, lint"
