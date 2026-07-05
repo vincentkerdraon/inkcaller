@@ -2,7 +2,6 @@ package inkcallerv8
 
 import (
 	"context"
-	"fmt"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -152,69 +151,69 @@ func callAndValidate(ctx context.Context, t *testing.T, tr *impl, storyFilePath 
 		//this struct is a pain to test!
 
 		if (out.TurnIndex == nil || expected.TurnIndex == nil) && expected.TurnIndex != out.TurnIndex {
-			t.Fatalf(fmt.Sprintf("when %q, a TurnIndex is nil\ngot =%+v\nwant=%+v", testCase, out, expected))
+			t.Fatalf("when %q, a TurnIndex is nil\ngot =%+v\nwant=%+v", testCase, out, expected)
 		}
 		if expected.TurnIndex != nil && *out.TurnIndex != *expected.TurnIndex {
-			t.Errorf(fmt.Sprintf("when %q,\ngot =%d\nwant=%d", testCase, *out.TurnIndex, *expected.TurnIndex))
+			t.Errorf("when %q,\ngot =%d\nwant=%d", testCase, *out.TurnIndex, *expected.TurnIndex)
 		}
 
 		if (out.StateOut == nil || expected.StateOut == nil) && expected.StateOut != out.StateOut {
-			t.Fatalf(fmt.Sprintf("when %q, a StateOut is nil\ngot =%+v\nwant=%+v", testCase, out, expected))
+			t.Fatalf("when %q, a StateOut is nil\ngot =%+v\nwant=%+v", testCase, out, expected)
 		}
 		if expected.StateOut != nil && *out.StateOut != *expected.StateOut {
-			t.Errorf(fmt.Sprintf("when %q,\ngot =%s\nwant=%s", testCase, *out.StateOut, *expected.StateOut))
+			t.Errorf("when %q,\ngot =%s\nwant=%s", testCase, *out.StateOut, *expected.StateOut)
 		}
 
 		if (out.Choices == nil || expected.Choices == nil) && expected.Choices != out.Choices {
-			t.Fatalf(fmt.Sprintf("when %q, a choice is nil,\ngot =%+v\nwant=%+v", testCase, out, expected))
+			t.Fatalf("when %q, a choice is nil,\ngot =%+v\nwant=%+v", testCase, out, expected)
 		}
 		if expected.Choices != nil {
 			if len(*expected.Choices) != len(*out.Choices) {
-				t.Fatalf(fmt.Sprintf("when %q,\ngot =%+v\nwant=%+v", testCase, *out.Choices, *expected.Choices))
+				t.Fatalf("when %q,\ngot =%+v\nwant=%+v", testCase, *out.Choices, *expected.Choices)
 			}
 			for i, c := range *out.Choices {
 				if (*expected.Choices)[i].Index != c.Index || (*expected.Choices)[i].Text != c.Text || (*expected.Choices)[i].SourcePath != c.SourcePath {
-					t.Errorf(fmt.Sprintf("when %q, choice index %d\ngot =%+v\nwant=%+v", testCase, i, *out.Choices, *expected.Choices))
+					t.Errorf("when %q, choice index %d\ngot =%+v\nwant=%+v", testCase, i, *out.Choices, *expected.Choices)
 				}
 			}
 		}
 
 		if (out.GlobalTags == nil || expected.GlobalTags == nil) && expected.GlobalTags != out.GlobalTags {
-			t.Fatalf(fmt.Sprintf("when %q, a GlobalTags is nil,\ngot =%+v\nwant=%+v", testCase, out, expected))
+			t.Fatalf("when %q, a GlobalTags is nil,\ngot =%+v\nwant=%+v", testCase, out, expected)
 		}
 		if expected.GlobalTags != nil {
 			if len(*expected.GlobalTags) != len(*out.GlobalTags) {
-				t.Fatalf(fmt.Sprintf("when %q,\ngot =%s\nwant=%s", testCase, *out.GlobalTags, *expected.GlobalTags))
+				t.Fatalf("when %q,\ngot =%s\nwant=%s", testCase, *out.GlobalTags, *expected.GlobalTags)
 			}
 			for i, c := range *out.GlobalTags {
 				if (*expected.GlobalTags)[i] != c {
-					t.Errorf(fmt.Sprintf("when %q,\ngot =%s\nwant=%s", testCase, *out.GlobalTags, *expected.GlobalTags))
+					t.Errorf("when %q,\ngot =%s\nwant=%s", testCase, *out.GlobalTags, *expected.GlobalTags)
 				}
 			}
 		}
 
 		if (out.Lines == nil || expected.Lines == nil) && expected.Lines != out.Lines {
-			t.Fatalf(fmt.Sprintf("when %q, a Lines is nil,\ngot =%+v\nwant=%+v", testCase, out, expected))
+			t.Fatalf("when %q, a Lines is nil,\ngot =%+v\nwant=%+v", testCase, out, expected)
 		}
 		if expected.Lines != nil {
 			if len(*expected.Lines) != len(*out.Lines) {
-				t.Fatalf(fmt.Sprintf("when %q,\ngot =%+v\nwant=%+v", testCase, *out.Lines, *expected.Lines))
+				t.Fatalf("when %q,\ngot =%+v\nwant=%+v", testCase, *out.Lines, *expected.Lines)
 			}
 			for i, l := range *out.Lines {
 				if (*expected.Lines)[i].Text != l.Text {
-					t.Errorf(fmt.Sprintf("when %q, Line index %d\ngot =%+v\nwant=%+v\ngot =%q\nwant=%q",
-						testCase, i, *out.Lines, *expected.Lines, l.Text, (*expected.Lines)[i].Text))
+					t.Errorf("when %q, Line index %d\ngot =%+v\nwant=%+v\ngot =%q\nwant=%q",
+						testCase, i, *out.Lines, *expected.Lines, l.Text, (*expected.Lines)[i].Text)
 				}
 				if ((*expected.Lines)[i].Tags == nil || l.Tags == nil) && (*expected.Lines)[i].Tags != l.Tags {
-					t.Fatalf(fmt.Sprintf("when %q, Line index %d, Line Tags is nil,\ngot =%+v\nwant=%+v", testCase, i, *out.Lines, *expected.Lines))
+					t.Fatalf("when %q, Line index %d, Line Tags is nil,\ngot =%+v\nwant=%+v", testCase, i, *out.Lines, *expected.Lines)
 				}
 				if (*expected.Lines)[i].Tags != nil {
 					if len(*(*expected.Lines)[i].Tags) != len(*l.Tags) {
-						t.Fatalf(fmt.Sprintf("when %q, Line index %d, Line Tag is nil\ngot =%+v\nwant=%+v", testCase, i, *l.Tags, *(*expected.Lines)[i].Tags))
+						t.Fatalf("when %q, Line index %d, Line Tag is nil\ngot =%+v\nwant=%+v", testCase, i, *l.Tags, *(*expected.Lines)[i].Tags)
 					}
 					for j, tag := range *l.Tags {
 						if tag != (*(*expected.Lines)[i].Tags)[j] {
-							t.Fatalf(fmt.Sprintf("when %q, Line index %d, Line Tags invalid,\ngot =%s\nwant=%s", testCase, i, tag, *(*expected.Lines)[i].Tags))
+							t.Fatalf("when %q, Line index %d, Line Tags invalid,\ngot =%s\nwant=%s", testCase, i, tag, *(*expected.Lines)[i].Tags)
 						}
 					}
 				}

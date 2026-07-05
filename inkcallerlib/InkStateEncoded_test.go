@@ -1,7 +1,6 @@
 package inkcallerlib
 
 import (
-	"fmt"
 	"reflect"
 	"strings"
 	"testing"
@@ -66,7 +65,7 @@ func TestStateEncoded_includeGameData(t *testing.T) {
 			}
 			for _, want := range tt.wantContains {
 				if !strings.Contains(string(tt.sEncoded), want) {
-					t.Errorf(fmt.Sprintf("TestInkState_includeGameData, want contains\ngot =%s\nwant=%s", tt.sEncoded, want))
+					t.Errorf("TestInkState_includeGameData, want contains\ngot =%s\nwant=%s", tt.sEncoded, want)
 				}
 			}
 		})
