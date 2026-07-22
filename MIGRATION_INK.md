@@ -2,6 +2,24 @@
 
 _Versioning with ink + inkjs is complicated._
 
+## inkjs 2.4.0 — evaluated, NOT adopted (2026-07-21)
+
+Latest is inkjs `v2.4.0` (2026-02) / inklecate `v1.2.1` (2026-05). We stay on inkjs `v2.3.0` /
+inklecate `v1.2.0`. Rationale (validated, not assumed):
+
+- **Behaviour is identical.** Same story format (`inkVersion:21`), same UMD `inkjs` global + `.Story`
+  API. A full real-story playthrough produced byte-identical lines + tags, and cross-version
+  `state.LoadJson` round-trips safely both directions.
+- **The 2.4.0 "CVE fix" is build-time only.** It's a `rollup` (bundler) bump — it does not ship in the
+  embedded runtime bundle we load via v8go, so it buys zero runtime security.
+- **2.4.0 changes `state.toJson()` serialization** — emits `isInvisibleDefault` on choices and drops
+  empty `tags:[]`. This breaks the golden test `Test_impl_Call_WhenStoryJSON` (inkcallerv8), which pins
+  the exact state string. Adopting 2.4.0 means regenerating that fixture for no functional gain.
+- inklecate `1.2.1` is Mac universal binaries + Chinese char ranges only — irrelevant to the Linux
+  build container.
+
+Revisit when a future inkjs release carries a real runtime fix.
+
 ## Ink 1.2.0
 
 - https://github.com/inkle/ink/releases/tag/v.1.2.0
